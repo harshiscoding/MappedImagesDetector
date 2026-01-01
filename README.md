@@ -123,12 +123,6 @@ Pull requests that add offensive or loader-style functionality will be rejected.
 
 ---
 
-## License
-
-Add a license file if missing (MIT is recommended for defensive tooling).
-
----
-
 ## Summary
 
 **MappedImagesDetector exists for one reason:**
