@@ -8,7 +8,7 @@ CScanTask::~CScanTask()
 {
 }
 
-bool CScanTask::EnumerateRegions(std::vector<CScanTask::SMemoryRegion*>* vMemoryRegions)
+bool CScanTask::EnumerateRegions(std::queue<CScanTask::SMemoryRegion*>* vMemoryRegions)
 {
     NTSTATUS                 status;
     MEMORY_BASIC_INFORMATION MemoryRegion{};
@@ -37,7 +37,7 @@ bool CScanTask::EnumerateRegions(std::vector<CScanTask::SMemoryRegion*>* vMemory
         if (!(MemoryRegion.Protect & (PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_READ | PAGE_EXECUTE_WRITECOPY)))
             continue;
 
-        vMemoryRegions->push_back(new SMemoryRegion{reinterpret_cast<DWORD64>(MemoryRegion.BaseAddress), MemoryRegion.RegionSize, MemoryRegion.Protect});
+        vMemoryRegions->push(new SMemoryRegion{reinterpret_cast<DWORD64>(MemoryRegion.BaseAddress), MemoryRegion.RegionSize, MemoryRegion.Protect});
     }
 
     Logger::Instance().Log(LogLevel::Info, "%zu memory regions enumerated for scanning.", vMemoryRegions->size());
@@ -64,12 +64,14 @@ void CScanTask::ScanRegion(SMemoryRegion* pRegion)
 void CScanTask::Execute()
 {
     Logger::Instance().Log(LogLevel::Debug, "Starting scan task...");
-    std::vector<SMemoryRegion*> vMemoryRegions;
+    std::queue<SMemoryRegion*> vMemoryRegions;
     int                         iTotalRegions = EnumerateRegions(&vMemoryRegions);
     if (iTotalRegions)
     {
-        for (const auto& pRegion : vMemoryRegions)
+        while (!vMemoryRegions.empty())
         {
+            SMemoryRegion* pRegion = vMemoryRegions.front();
+            vMemoryRegions.pop();
             ScanRegion(pRegion);
             delete pRegion;
         }

@@ -16,7 +16,7 @@ public:
 
     void SetOnFinishCallback(void*(callback)(LPVOID lpParam)) { m_lpOnFinishCallback = (LPVOID)callback; }
 
-    bool EnumerateRegions(std::vector<CScanTask::SMemoryRegion*>* vMemoryRegions);
+    bool EnumerateRegions(std::queue<CScanTask::SMemoryRegion*>* vMemoryRegions);
     void ScanRegion(SMemoryRegion* pRegion);
     void Execute();
 
