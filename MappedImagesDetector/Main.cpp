@@ -2,10 +2,10 @@
 
 int main()
 {
-	CMemoryMapper* pMapper = new CMemoryMapper();
+    CMemoryMapper* pMapper = new CMemoryMapper();
 
-	Logger::Instance().SetLogFile("MappedImages.logs");
+    Logger::Instance().SetLogFile("MappedImages.logs");
 
-	pMapper->Attach("notepad.exe");
-	pMapper->Start();
+    pMapper->Attach("notepad.exe");
+    pMapper->Start();
 }

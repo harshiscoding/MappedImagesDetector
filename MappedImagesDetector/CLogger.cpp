@@ -4,15 +4,23 @@ static const char* GetColorCode(LogLevel level)
 {
     switch (level)
     {
-    case LogLevel::Info: return "\x1b[32m"; // green
-    case LogLevel::Warning: return "\x1b[33m"; // yellow
-    case LogLevel::Error: return "\x1b[31m"; // red
-    case LogLevel::Debug: return "\x1b[36m"; // cyan
-    default: return "\x1b[0m";
+        case LogLevel::Info:
+            return "\x1b[32m";            // green
+        case LogLevel::Warning:
+            return "\x1b[33m";            // yellow
+        case LogLevel::Error:
+            return "\x1b[31m";            // red
+        case LogLevel::Debug:
+            return "\x1b[36m";            // cyan
+        default:
+            return "\x1b[0m";
     }
 }
 
-static const char* ResetColor() { return "\x1b[0m"; }
+static const char* ResetColor()
+{
+    return "\x1b[0m";
+}
 
 Logger& Logger::Instance()
 {
@@ -20,8 +28,7 @@ Logger& Logger::Instance()
     return instance;
 }
 
-Logger::Logger()
-    : m_Stop(false), m_bUseFile(false)
+Logger::Logger() : m_Stop(false), m_bUseFile(false)
 {
     // enable ANSI escape sequence processing on Windows console
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -63,17 +70,22 @@ const char* Logger::LevelToString(LogLevel level)
 {
     switch (level)
     {
-    case LogLevel::Info: return "INFO";
-    case LogLevel::Warning: return "WARN";
-    case LogLevel::Error: return "ERR";
-    case LogLevel::Debug: return "DBG";
-    default: return "UNK";
+        case LogLevel::Info:
+            return "INFO";
+        case LogLevel::Warning:
+            return "WARN";
+        case LogLevel::Error:
+            return "ERR";
+        case LogLevel::Debug:
+            return "DBG";
+        default:
+            return "UNK";
     }
 }
 
 void Logger::Log(LogLevel level, const char* format, ...)
 {
-    char msgbuf[1024];
+    char    msgbuf[1024];
     va_list args;
     va_start(args, format);
     vsnprintf_s(msgbuf, sizeof(msgbuf), _TRUNCATE, format, args);

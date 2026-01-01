@@ -8,7 +8,6 @@
 #include <ctime>
 #include <iomanip>
 
-
 #include "CLogger.h"
 #include "KernelCalls.hpp"
 #include "CScanTask.h"

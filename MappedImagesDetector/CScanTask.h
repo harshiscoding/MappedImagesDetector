@@ -4,34 +4,34 @@
 class CScanTask
 {
 public:
-	struct SMemoryRegion
-	{
-		DWORD64 dwBaseAddress;
-		size_t Size;
-		DWORD dwProtect;
-	};
+    struct SMemoryRegion
+    {
+        DWORD64 dwBaseAddress;
+        size_t  Size;
+        DWORD   dwProtect;
+    };
 
-	CScanTask(HANDLE hProcess, int iProcessID);
-	~CScanTask();
+    CScanTask(HANDLE hProcess, int iProcessID);
+    ~CScanTask();
 
-	void SetOnFinishCallback(void* (callback)(LPVOID lpParam)) { m_lpOnFinishCallback = (LPVOID)callback; }
-	
-	bool EnumerateRegions(std::vector<CScanTask::SMemoryRegion*>* vMemoryRegions);
-	void ScanRegion(SMemoryRegion* pRegion);
-	void Execute();
+    void SetOnFinishCallback(void*(callback)(LPVOID lpParam)) { m_lpOnFinishCallback = (LPVOID)callback; }
 
-	void ExecuteThread(int iThreadIdx);
+    bool EnumerateRegions(std::vector<CScanTask::SMemoryRegion*>* vMemoryRegions);
+    void ScanRegion(SMemoryRegion* pRegion);
+    void Execute();
 
-	bool IsCompleted() { return m_bCompleted; }
+    void ExecuteThread(int iThreadIdx);
 
-	std::thread GetThread() { return std::move(m_Thread); }
+    bool IsCompleted() { return m_bCompleted; }
+
+    std::thread GetThread() { return std::move(m_Thread); }
 
 private:
-	bool FindIATThunk(BYTE* pBuffer, DWORD dwSize, DWORD64 dwBaseAddress, DWORD64* dwThunkAddress);
+    bool FindIATThunk(BYTE* pBuffer, DWORD dwSize, DWORD64 dwBaseAddress, DWORD64* dwThunkAddress);
 
-	std::thread m_Thread;
-	HANDLE m_hProcess;
-	bool m_bCompleted;
+    std::thread m_Thread;
+    HANDLE      m_hProcess;
+    bool        m_bCompleted;
 
-	LPVOID m_lpOnFinishCallback;
+    LPVOID m_lpOnFinishCallback;
 };

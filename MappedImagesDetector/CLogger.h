@@ -29,22 +29,22 @@ private:
     Logger();
     ~Logger();
 
-    void WorkerThreadProc();
+    void        WorkerThreadProc();
     const char* LevelToString(LogLevel level);
 
     struct LogEntry
     {
-        LogLevel level;
+        LogLevel    level;
         std::time_t timestamp;
         std::string message;
     };
 
-    std::mutex m_Mutex;
+    std::mutex              m_Mutex;
     std::condition_variable m_CondVar;
-    std::queue<LogEntry> m_Queue;
+    std::queue<LogEntry>    m_Queue;
 
-    std::ofstream m_LogFile;
-    std::thread m_Worker;
+    std::ofstream     m_LogFile;
+    std::thread       m_Worker;
     std::atomic<bool> m_Stop;
-    bool m_bUseFile;
+    bool              m_bUseFile;
 };

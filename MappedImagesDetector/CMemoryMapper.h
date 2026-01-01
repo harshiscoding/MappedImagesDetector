@@ -4,15 +4,14 @@
 class CMemoryMapper
 {
 public:
-	CMemoryMapper();
-	~CMemoryMapper();
+    CMemoryMapper();
+    ~CMemoryMapper();
 
-	void Attach(std::vector<const char*> vProcesses);
-	void Attach(const char* szProcessName);
+    void Attach(std::vector<const char*> vProcesses);
+    void Attach(const char* szProcessName);
 
-	void Start();
+    void Start();
 
 private:
-	std::queue<CScanTask*> m_pScanTasks;
+    std::queue<CScanTask*> m_pScanTasks;
 };
-
